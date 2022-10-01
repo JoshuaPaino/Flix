@@ -10,7 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_28_220948) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_01_225811) do
+  create_table "characterizations", force: :cascade do |t|
+    t.integer "movie_id", null: false
+    t.integer "genre_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["genre_id"], name: "index_characterizations_on_genre_id"
+    t.index ["movie_id"], name: "index_characterizations_on_movie_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer "movie_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["movie_id"], name: "index_favorites_on_movie_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "movies", force: :cascade do |t|
     t.string "title"
     t.string "rating"
@@ -22,6 +46,31 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_28_220948) do
     t.string "director"
     t.string "duration"
     t.string "image_file_name", default: "placeholder.png"
+    t.string "slug"
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.integer "stars"
+    t.text "comment"
+    t.integer "movie_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["movie_id"], name: "index_reviews_on_movie_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "admin"
+  end
+
+  add_foreign_key "characterizations", "genres"
+  add_foreign_key "characterizations", "movies"
+  add_foreign_key "favorites", "movies"
+  add_foreign_key "favorites", "users"
+  add_foreign_key "reviews", "movies"
 end

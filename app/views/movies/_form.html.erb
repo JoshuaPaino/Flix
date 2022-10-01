@@ -1,4 +1,6 @@
 <%= form_with(model: movie) do |f| %>
+<%= render "shared/errors", object: movie %>
+
   <%= f.label :title %>
   <%= f.text_field :title, autofocus: true %>
 
@@ -23,7 +25,9 @@
    <%= f.label :image_file_name %>
   <%= f.text_field :image_file_name %>
 
-  
+  <div class="checkboxes">
+  <%= f.collection_check_boxes(:genre_ids, Genre.order(:name), :id, :name) %>
+</div>
 
   <%= f.submit %>
 <% end %>
